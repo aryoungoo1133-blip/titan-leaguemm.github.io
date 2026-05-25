@@ -63,6 +63,19 @@
             color: var(--accent-color);
         }
 
+        /* REGISTER HIGHLIGHT BUTTON */
+        .nav a.reg-link {
+            color: var(--accent-color);
+            border: 1px solid var(--accent-color);
+            padding: 5px 12px;
+            border-radius: 4px;
+            background: rgba(212, 175, 55, 0.1);
+        }
+        .nav a.reg-link:hover {
+            background: var(--accent-color);
+            color: #111;
+        }
+
         /* MAIN CONTAINER LAYOUT */
         .container {
             width: 95%;
@@ -341,6 +354,7 @@
             <a href="#overview">Overview</a>
             <a href="#teams">Teams & Rosters</a>
             <a href="#bracket">Bracket</a>
+            <a href="register.html" class="reg-link">Register Now</a>
         </div>
     </div>
 
@@ -363,7 +377,7 @@
                 
                 <div class="team-grid">
                     <div class="team-btn active" onclick="showTeam('onic')">
-                        <img src="C:\Users\User\Desktop\Titan League MLBB Tournament MM\onic-b-256.png" alt="onic">
+                        <img src="https://gameloid.com/wp-content/uploads/2023/11/fnatic-onic-logo.png" alt="Onic">
                         Onic Esports
                     </div>
                     <div class="team-btn" onclick="showTeam('phoenix')">
@@ -421,7 +435,7 @@
     </footer>
 
     <script>
-        // Player Database (ပုံများကို Placeholder URL သုံးထားပြီး မိမိစိတ်ကြိုက် လဲနိုင်သည်)
+        // Player Database
         const teamData = {
             onic: {
                 name: "Onic Esports",
@@ -459,8 +473,8 @@
             const buttons = document.querySelectorAll('.team-btn');
             buttons.forEach(btn => btn.classList.remove('active'));
             
-            if (event && event.currentTarget) {
-                event.currentTarget.classList.add('active');
+            if (window.event && window.event.currentTarget) {
+                window.event.currentTarget.classList.add('active');
             }
 
             const selectedTeam = teamData[teamKey];
@@ -483,7 +497,6 @@
             });
         }
 
-        // Initialize with 'onic' setup instead of 'titan' to fix the blank page error
         window.onload = function() {
             showTeam('onic');
         };
