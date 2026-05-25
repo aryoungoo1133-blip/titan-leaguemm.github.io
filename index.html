@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Titan League MLBB Tournament — Liquipedia Style</title>
+    <style>
+        /* LIQUIPEDIA DARK THEME CONFIGURATION */
+        :root {
+            --bg-color: #13171c;
+            --card-bg: #1c2129;
+            --border-color: #2e3642;
+            --text-color: #e2e8f0;
+            --accent-color: #d4af37;
+            --table-header: #242b35;
+            --success-color: #4ade80;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+
+        /* NAVIGATION BAR */
+        .topbar {
+            background: #0f172a;
+            padding: 15px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 3px solid var(--accent-color);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo {
+            color: var(--accent-color);
+            font-size: 26px;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+        }
+
+        .nav a {
+            color: white;
+            text-decoration: none;
+            margin-left: 20px;
+            font-size: 15px;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+
+        .nav a:hover {
+            color: var(--accent-color);
+        }
+
+        /* MAIN CONTAINER LAYOUT */
+        .container {
+            width: 95%;
+            max-width: 1440px;
+            margin: 30px auto;
+            display: grid;
+            grid-template-columns: 1fr 340px;
+            gap: 25px;
+        }
+
+        /* LEFT CONTENT AREA */
+        .content {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 30px;
+        }
+
+        .title-area {
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 15px;
+            margin-bottom: 25px;
+        }
+
+        .title {
+            font-size: 38px;
+            color: #fff;
+        }
+
+        .subtitle {
+            color: #94a3b8;
+            font-size: 14px;
+        }
+
+        .section {
+            margin-top: 40px;
+        }
+
+        .section h2 {
+            font-size: 24px;
+            color: #fff;
+            margin-bottom: 15px;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 8px;
+        }
+
+        /* LIQUIPEDIA STYLE SIDEBAR INFOBOX */
+        .sidebar {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            padding: 20px;
+            border-radius: 6px;
+            height: fit-content;
+        }
+
+        .sidebar-logo {
+            width: 100%;
+            height: auto;
+            border-radius: 4px;
+            border: 1px solid var(--border-color);
+            margin-bottom: 15px;
+        }
+
+        .sidebar h2 {
+            text-align: center;
+            font-size: 22px;
+            background: var(--table-header);
+            padding: 10px;
+            border-radius: 4px;
+            color: var(--accent-color);
+            margin-bottom: 15px;
+        }
+
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid var(--border-color);
+            font-size: 14px;
+        }
+
+        .info-row:last-child {
+            border-bottom: none;
+        }
+
+        .info-row b {
+            color: #94a3b8;
+        }
+
+        /* TEAMS NAV BUTTONS */
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .team-btn {
+            background: var(--table-header);
+            border: 1px solid var(--border-color);
+            padding: 15px;
+            border-radius: 6px;
+            color: white;
+            cursor: pointer;
+            text-align: center;
+            font-weight: bold;
+            transition: all 0.2s;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .team-btn img {
+            width: 50px;
+            height: 50px;
+            object-fit: contain;
+        }
+
+        .team-btn:hover, .team-btn.active {
+            border-color: var(--accent-color);
+            background: #2e3642;
+            transform: translateY(-2px);
+        }
+
+        /* DYNAMIC PLAYER ROSTER DISPLAY */
+        .roster-box {
+            background: var(--bg-color);
+            border: 1px solid var(--border-color);
+            padding: 25px;
+            border-radius: 6px;
+        }
+
+        .roster-title {
+            color: var(--accent-color);
+            margin-bottom: 20px;
+            font-size: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .player-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
+        }
+
+        .player-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 15px;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .player-img {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 12px;
+            border: 2px solid var(--border-color);
+            background: #242b35;
+        }
+
+        .player-name {
+            font-size: 18px;
+            font-weight: bold;
+            color: #fff;
+        }
+
+        .player-ign {
+            color: var(--accent-color);
+            font-size: 14px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .player-details {
+            font-size: 13px;
+            color: #94a3b8;
+        }
+
+        .role-badge {
+            display: inline-block;
+            background: var(--table-header);
+            padding: 3px 10px;
+            border-radius: 12px;
+            font-size: 12px;
+            margin-top: 8px;
+            border: 1px solid var(--border-color);
+        }
+
+        /* PLAYOFFS BRACKET */
+        .bracket-container {
+            display: flex;
+            gap: 20px;
+            background: var(--bg-color);
+            padding: 20px;
+            border-radius: 6px;
+            border: 1px solid var(--border-color);
+            overflow-x: auto;
+        }
+
+        .bracket-column {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .bracket-title {
+            text-align: center;
+            font-size: 12px;
+            color: #94a3b8;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        .match-box {
+            border: 1px solid var(--border-color);
+            background: var(--card-bg);
+            width: 220px;
+            border-radius: 4px;
+        }
+
+        .match-team {
+            padding: 8px 12px;
+            display: flex;
+            justify-content: space-between;
+            font-size: 13px;
+        }
+
+        .match-team:first-child {
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .match-team .score {
+            font-weight: bold;
+            color: var(--accent-color);
+        }
+
+        footer {
+            margin-top: 60px;
+            background: #0f172a;
+            color: #94a3b8;
+            text-align: center;
+            padding: 25px;
+            font-size: 14px;
+            border-top: 1px solid var(--border-color);
+        }
+
+        /* RESPONSIVE EFFECT */
+        @media (max-width: 992px) {
+            .container {
+                grid-template-columns: 1fr;
+            }
+            .container .sidebar {
+                grid-row: 1;
+            }
+            .topbar {
+                flex-direction: column;
+                gap: 15px;
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="topbar">
+        <div class="logo">Titan League</div>
+        <div class="nav">
+            <a href="#overview">Overview</a>
+            <a href="#teams">Teams & Rosters</a>
+            <a href="#bracket">Bracket</a>
+        </div>
+    </div>
+
+    <div class="container">
+
+        <div class="content" id="overview">
+            <div class="title-area">
+                <h1 class="title">Titan League Tournament S1</h1>
+                <p class="subtitle">The ultimate MLBB community championship in Myanmar.</p>
+            </div>
+
+            <div class="section">
+                <h2>Tournament Overview</h2>
+                <p>Welcome to the Titan League Tournament. This esports portal delivers real-time match data, comprehensive roster updates, and complete tournament coverage matching professional.</p>
+            </div>
+
+            <div class="section" id="teams">
+                <h2>Participating Teams & Player Info</h2>
+                <p style="color: #94a3b8; margin-bottom: 15px;">အသင်းတစ်ခုချင်းစီကို နှိပ်ပြီး ကစားသမားများ၏ အချက်အလက်နှင့် ပုံများကို ကြည့်ရှုနိုင်ပါသည်။</p>
+                
+                <div class="team-grid">
+                    <div class="team-btn active" onclick="showTeam('onic')">
+                        <img src="C:\Users\User\Desktop\Titan League MLBB Tournament MM\onic-b-256.png" alt="onic">
+                        Onic Esports
+                    </div>
+                    <div class="team-btn" onclick="showTeam('phoenix')">
+                        <img src="https://img.icons8.com/shield" alt="Phoenix">
+                        Dark Phoenix
+                    </div>
+                    <div class="team-btn" onclick="showTeam('alpha')">
+                        <img src="https://img.icons8.com/shield" alt="Alpha">
+                        Alpha Legends
+                    </div>
+                </div>
+
+                <div class="roster-box">
+                    <h3 class="roster-title" id="roster-team-name">Onic Esports Roster</h3>
+                    <div class="player-grid" id="player-container"></div>
+                </div>
+            </div>
+
+            <div class="section" id="bracket">
+                <h2>Playoffs Bracket</h2>
+                <div class="bracket-container">
+                    <div class="bracket-column">
+                        <div class="bracket-title">Semifinals</div>
+                        <div class="match-box">
+                            <div class="match-team"><span>Onic Esports</span> <span class="score">2</span></div>
+                            <div class="match-team"><span>Dark Phoenix</span> <span class="score">0</span></div>
+                        </div>
+                    </div>
+                    <div class="bracket-column">
+                        <div class="bracket-title">Grand Finals</div>
+                        <div class="match-box">
+                            <div class="match-team"><span>Onic Esports</span> <span class="score">-</span></div>
+                            <div class="match-team"><span>Alpha Legends</span> <span class="score">-</span></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="sidebar">
+            <h2>Titan League</h2>
+            <img src="https://i.imgur.com/Q8Z8F0T.png" class="sidebar-logo" alt="Tournament Logo">
+            <div class="info-row"><b>Game:</b> <span>Mobile Legends</span></div>
+            <div class="info-row"><b>Region:</b> <span>Myanmar</span></div>
+            <div class="info-row"><b>Type:</b> <span>Online + Offline</span></div>
+            <div class="info-row"><b>Prize Pool:</b> <span style="color: var(--accent-color); font-weight:bold;">1,000,000 MMK</span></div>
+            <div class="info-row"><b>Date:</b> <span>June 2026</span></div>
+        </div>
+
+    </div>
+
+    <footer>
+        © 2026 Titan League Tournament — Powered by Liquipedia Structure
+    </footer>
+
+    <script>
+        // Player Database (ပုံများကို Placeholder URL သုံးထားပြီး မိမိစိတ်ကြိုက် လဲနိုင်သည်)
+        const teamData = {
+            onic: {
+                name: "Onic Esports",
+                players: [
+                    { name: "Kairi Ygnacio Rayosdelsol", ign: "Onic.Kairi", age: 20, role: "Jungler", img: "https://api.dicebear.com/7.x/bottts/svg?seed=Kairi" },
+                    { name: "Moch Lutfi Ardianto", ign: "Onic.Lutpi", age: 21, role: "EXP Laner", img: "https://api.dicebear.com/7.x/bottts/svg?seed=Lutpi" },
+                    { name: "Gilang", ign: "Onic.SANZ", age: 19, role: "Mid Laner", img: "https://api.dicebear.com/7.x/bottts/svg?seed=Sanz" },
+                    { name: "Grant Duane Pillas", ign: "Onic.Kelra", age: 22, role: "Gold Laner", img: "https://api.dicebear.com/7.x/bottts/svg?seed=Kelra" },
+                    { name: "Nicky Fernando Pontonuwu", ign: "Onic.Kiboy", age: 23, role: "Roamer", img: "https://api.dicebear.com/7.x/bottts/svg?seed=Kiboy" }
+                ]
+            },
+            phoenix: {
+                name: "Dark Phoenix",
+                players: [
+                    { name: "Mya Mya", ign: "PNX.Phoenix", age: 21, role: "Jungler", img: "https://api.dicebear.com/7.x/bottts/svg?seed=Phoenix" },
+                    { name: "Hla Hla", ign: "PNX.Shadow", age: 22, role: "EXP Laner", img: "https://api.dicebear.com/7.x/bottts/svg?seed=Shadow" },
+                    { name: "Tun Tun", ign: "PNX.Blaze", age: 20, role: "Mid Laner", img: "https://api.dicebear.com/7.x/bottts/svg?seed=Blaze" },
+                    { name: "Zaw Zaw", ign: "PNX.Storm", age: 19, role: "Gold Laner", img: "https://api.dicebear.com/7.x/bottts/svg?seed=Storm" },
+                    { name: "Kaung Kaung", ign: "PNX.Shield", age: 24, role: "Roamer", img: "https://api.dicebear.com/7.x/bottts/svg?seed=Shield" }
+                ]
+            },
+            alpha: {
+                name: "Alpha Legends",
+                players: [
+                    { name: "Mg Mg", ign: "ALPHA.King", age: 22, role: "Jungler", img: "https://api.dicebear.com/7.x/bottts/svg?seed=King" },
+                    { name: "Aung Htet", ign: "ALPHA.Titan", age: 20, role: "EXP Laner", img: "https://api.dicebear.com/7.x/bottts/svg?seed=Titan" },
+                    { name: "Sai Sai", ign: "ALPHA.Wizard", age: 21, role: "Mid Laner", img: "https://api.dicebear.com/7.x/bottts/svg?seed=Wizard" },
+                    { name: "Hein Htet", ign: "ALPHA.Bullet", age: 19, role: "Gold Laner", img: "https://api.dicebear.com/7.x/bottts/svg?seed=Bullet" },
+                    { name: "Lin Lin", ign: "ALPHA.Guardian", age: 23, role: "Roamer", img: "https://api.dicebear.com/7.x/bottts/svg?seed=Guardian" }
+                ]
+            }
+        };
+
+        function showTeam(teamKey) {
+            const buttons = document.querySelectorAll('.team-btn');
+            buttons.forEach(btn => btn.classList.remove('active'));
+            
+            if (event && event.currentTarget) {
+                event.currentTarget.classList.add('active');
+            }
+
+            const selectedTeam = teamData[teamKey];
+            document.getElementById('roster-team-name').innerText = selectedTeam.name + " Roster";
+            
+            const container = document.getElementById('player-container');
+            container.innerHTML = "";
+
+            selectedTeam.players.forEach(player => {
+                const cardHTML = `
+                    <div class="player-card">
+                        <img src="${player.img}" class="player-img" alt="${player.name}">
+                        <div class="player-ign">${player.ign}</div>
+                        <div class="player-name">${player.name}</div>
+                        <div class="player-details">Age: ${player.age}</div>
+                        <div class="role-badge">${player.role}</div>
+                    </div>
+                `;
+                container.innerHTML += cardHTML;
+            });
+        }
+
+        // Initialize with 'onic' setup instead of 'titan' to fix the blank page error
+        window.onload = function() {
+            showTeam('onic');
+        };
+    </script>
+</body>
+</html>
